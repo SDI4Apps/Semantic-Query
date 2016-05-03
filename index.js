@@ -29,8 +29,8 @@ $('#run').click(function() {
 });
 
 $('#show_publish').click(function() {
-    var url = 'http://data.plan4all.eu/sparql?default-graph-uri=&query={0}&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on'.format(encodeURIComponent($('.generated_code').html()));
-    url = url.replace('lt%3Bextent%26gt%3B','<extent>');
+    var url = 'http://data.plan4all.eu/sparql?default-graph-uri=&query={0}&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on'.format(encodeURIComponent($('.generated_code').text()));
+    url = url.replace('%3Cextent%3E','<extent>');
     $('#resource_locator').html(url);
     $('#publish_dialog').modal('show');
 });
@@ -156,7 +156,7 @@ function generateSparql() {
     conditions.push('FILTER(isBlank(?geom) = false)');
     conditions.push('<extent>');
     var sub_query = 'SELECT ?o FROM <' + graph + '> WHERE {?o <' + geom + '> ?geom. ' + conditions.join('. ') + '} LIMIT 100';
-    query = 'SELECT ?o ?p ?s FROM <' + graph + '> WHERE {?o ?p ?s. {' + sub_query + '}}';
+    query = 'SELECT ?o ?p ?s FROM <' + graph + '> WHERE { ?o ?p ?s. {' + sub_query + '}}';
     $(".generated_code").text(query);
 }
 
