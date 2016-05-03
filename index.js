@@ -30,6 +30,7 @@ $('#run').click(function() {
 
 $('#show_publish').click(function() {
     var url = 'http://data.plan4all.eu/sparql?default-graph-uri=&query={0}&should-sponge=&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on'.format(encodeURIComponent($('.generated_code').html()));
+    url = url.replace('lt%3Bextent%26gt%3B','<extent>');
     $('#resource_locator').html(url);
     $('#publish_dialog').modal('show');
 });
@@ -145,9 +146,9 @@ function generateSparql() {
             if (operator == 'Equals' && val.indexOf('http') >= 0)
                 conditions.push(['?o ', '<' + property + '>', '<' + val + '>'].join(' '));
             if (operator == 'Equals' && val.indexOf('http') == -1)
-                conditions.push('?o <' + property + '> ?' + criteria_field + '. FILTER(str(?' + criteria_field + ') = "' + val + '")');
+                conditions.push("?o <" + property + "> ?" + criteria_field + ". FILTER(str(?" + criteria_field + ") = '" + val + "')");
             if (operator == 'Contains')
-                conditions.push('?o <' + property + '> ?' + criteria_field + '. FILTER(regex(str(?' + criteria_field + '), "' + val + '"))');
+                conditions.push("?o <" + property + "> ?" + criteria_field + ". FILTER(regex(str(?" + criteria_field + "), '" + val + "'))");
         }
     })
     var graph = $('#graph').val();
@@ -211,10 +212,8 @@ generateSparql();
 
 refresh();
 
-
-
 $('#publish').click(function() {
-    $.cookie("JSESSIONID", "1");
+    //$.cookie("JSESSIONID", "1");
 
     var contact = {
         name: $('#first_name').val(),
@@ -232,7 +231,7 @@ $('#publish').click(function() {
         keywords: $('#keywords').val(),
         contactPoint: contact,
         lineage: $('#lineage').val(),
-        extent: map.getView().calculateExtent(map.getSize()),
+        extent: ol.proj.transformExtent(map.getView().calculateExtent(map.getSize()), map.getView().getProjection(), 'EPSG:4326'),
         type: 'service',
         serviceType: 'data',
         issued: (new Date()).toISOString(),
@@ -246,14 +245,14 @@ $('#publish').click(function() {
         charset: 'utf-8',
         crs: 'EPSG:4326',
         linkage: '',
-        distribution_format: ''
+        format: 'application/sparql-results+json'
     }
     var sjson = JSON.stringify(jobj, null, 2);
 /*    $('#json_result').html(sjson);
     $('#publish_json_dialog').modal('show');*/
 
     $.ajax({
-        url: "http://dev.bnhelp.cz/projects/metadata/trunk/util/rest.php",
+        url: "/php/metadata/util/rest.php",
         data: sjson,
         cache: false,
         method: 'POST',
