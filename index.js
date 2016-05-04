@@ -146,9 +146,9 @@ function generateSparql() {
             if (operator == 'Equals' && val.indexOf('http') >= 0)
                 conditions.push(['?o ', '<' + property + '>', '<' + val + '>'].join(' '));
             if (operator == 'Equals' && val.indexOf('http') == -1)
-                conditions.push("?o <" + property + "> ?" + criteria_field + ". FILTER(str(?" + criteria_field + ") = '" + val + "')");
+                conditions.push("?o <" + property + "> ?" + criteria_field + ". FILTER(str(?" + criteria_field + ") = <" + val + ">)");
             if (operator == 'Contains')
-                conditions.push("?o <" + property + "> ?" + criteria_field + ". FILTER(regex(str(?" + criteria_field + "), '" + val + "'))");
+                conditions.push("?o <" + property + "> ?" + criteria_field + ". FILTER(regex(str(?" + criteria_field + "), <" + val + ">))");
         }
     })
     var graph = $('#graph').val();
@@ -259,6 +259,7 @@ $('#publish').click(function() {
         async: false,
         dataType: 'json',
         success: function(e){
+            $('#publish_dialog').modal('hide');
             console.log(e);
         }
     })
