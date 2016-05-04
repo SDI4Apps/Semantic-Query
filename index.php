@@ -48,6 +48,38 @@
     <p>
         <div id="results"></div>
     </p>
+    <div class="modal fade" tabindex="-1" role="dialog" id="publish_result_success">
+        <div class="modal-dialog  modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Publishing result</h4>
+                </div>
+                <div class="modal-body">
+                    <div translate class="alert alert-success" ng-show="success">Successfuly published</div>
+                </div>
+                <div class="modal-footer" id="stc-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" translate>Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" tabindex="-1" role="dialog" id="publish_result_failure">
+        <div class="modal-dialog  modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Publishing result</h4>
+                </div>
+                <div class="modal-body">
+                    <div translate class="alert alert-danger" ng-show="success">Failed to publish</div>
+                </div>
+                <div class="modal-footer" id="stc-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" translate>Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" tabindex="-1" role="dialog" id="publish_dialog">
         <div class="modal-dialog  modal-lg">
             <div class="modal-content">

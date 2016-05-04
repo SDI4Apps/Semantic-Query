@@ -260,7 +260,14 @@ $('#publish').click(function() {
         dataType: 'json',
         success: function(e){
             $('#publish_dialog').modal('hide');
+            $('#publish_result_success').modal('show');
             console.log(e);
+        },
+        error: function(e){
+            $('#publish_dialog').modal('hide');
+            $('#publish_result_failure').modal('show');
+            console.log(e);
+
         }
     })
 });
