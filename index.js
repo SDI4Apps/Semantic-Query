@@ -147,8 +147,10 @@ function generateSparql() {
                 conditions.push(['?o ', '<' + property + '>', '<' + val + '>'].join(' '));
             if (operator == 'Equals' && val.indexOf('http') == -1)
                 conditions.push("?o <" + property + "> ?" + criteria_field + ". FILTER(str(?" + criteria_field + ") = <" + val + ">)");
-            if (operator == 'Contains')
+            if (operator == 'Contains' && val.indexOf('http') >= 0)
                 conditions.push("?o <" + property + "> ?" + criteria_field + ". FILTER(regex(str(?" + criteria_field + "), <" + val + ">))");
+            if (operator == 'Contains' && val.indexOf('http') == -1)
+                conditions.push("?o <" + property + "> ?" + criteria_field + ". FILTER(regex(str(?" + criteria_field + "), \"" + val + "\"))");
         }
     })
     var graph = $('#graph').val();
